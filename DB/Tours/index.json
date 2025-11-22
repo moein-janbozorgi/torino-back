@@ -39,7 +39,7 @@
     "title": "تور مادرید",
     "fleetVehicle": "ship",
     "price": 240000,
-    "availableSeats": 12,
+    "availableSeats": 11,
     "capacity": 150,
     "insurance": false,
     "options": [
@@ -63,7 +63,7 @@
     "title": "سلیمانیه",
     "fleetVehicle": "train",
     "price": 35000,
-    "availableSeats": 28,
+    "availableSeats": 27,
     "capacity": 50,
     "insurance": true,
     "options": [
