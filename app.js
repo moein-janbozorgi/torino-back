@@ -1,31 +1,31 @@
 require("dotenv").config();
 const express = require("express");
-
 const cors = require("cors");
-
 const swaggerUi = require("swagger-ui-express");
 let swaggerDocument = require("./swagger/swagger.json");
 const path = require("path");
 
 const app = express();
 
-import cors from "cors";
-
 app.use(cors({
-  origin: "https://torino-final.vercel.app/",
+  origin: "https://torino-final.vercel.app",
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"]
 }));
 
 app.use(express.json());
 
+// Static images
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use("/static", express.static(path.join(__dirname, "public")));
 
 const PORT = process.env.PORT || 6501;
+
+// START SERVER
 const startServer = (port) => {
   const server = app.listen(port, async () => {
     console.log(`Server running on port ${port}`);
+
     swaggerDocument.servers = [
       {
         url: `http://localhost:${port}`,
@@ -34,15 +34,12 @@ const startServer = (port) => {
     ];
 
     app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-    console.log(
-      `Swagger API docs are available at http://localhost:${port}/api-docs`
-    );
-    // Truncate route : http://localhost:<port>/truncate
+    console.log(`Swagger API docs: http://localhost:${port}/api-docs`);
   });
 
   server.on("error", (err) => {
     if (err.code === "EADDRINUSE") {
-      console.log(`Port ${port} is in use, trying port ${+port + 1}...`);
+      console.log(`Port ${port} is in use, trying ${+port + 1}...`);
       startServer(+port + 1);
     } else {
       console.error("Server error:", err);
@@ -52,6 +49,7 @@ const startServer = (port) => {
 
 startServer(PORT);
 
+// Routes
 app.use(require("./routes/dev"));
 app.use("/auth", require("./routes/auth"));
 app.use("/tour", require("./routes/tour"));
